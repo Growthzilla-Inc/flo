@@ -120,10 +120,9 @@ class Connection
     # store the data in parallel
     async.parallel([
       ((callb) =>
-        @redis.hset @key(type, "data"), id,
-          JSON.stringify id: id, term: term, score: score, data: (data || []),
+        @redis.hset(@key(type, "data"), id, JSON.stringify(id: id, term: term, score: score, data: (data || [])),
           ->
-            callb()
+            callb())
       ),
       ((callb) =>
         async.forEach @prefixes_for_phrase(term),
