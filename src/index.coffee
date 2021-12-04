@@ -28,6 +28,7 @@ class Connection
     @redis       = options.redis       || connectToRedis options
     @namespace   = options.namespace   || 'flo'
     @mincomplete = options.mincomplete || 1
+    @searchCache = options.searchCache || 600
     @redis.select options.database if options.database?
 
   # Public: Get all prefixes for a phrase
@@ -77,7 +78,7 @@ class Connection
               @key(type, "index", w)
             )
             @redis.zinterstore cachekey, interkeys.length, interkeys..., (err, count) =>
-              @redis.expire cachekey, 10 * 60, -> # expire after 10 minutes
+              @redis.expire cachekey, @searchCache, -> # expire after defined number of seconds or 10 minutes
                 cb()
           else
             cb()
@@ -172,7 +173,7 @@ class Connection
 
         term = JSON.parse(result).term
 
-        # remove 
+        # remove
         async.parallel([
           ((callb) =>
             @redis.hdel @key(type, "data"), id, callb
@@ -206,11 +207,11 @@ class Connection
         )
 
   # Public: Returns an array of IDs for a term
-  
+
   # * 'type'    - the type of data for this term
   # * 'term'    - the term to find the unique identifiers for
   # * 'callback(err, result)' - result is the ID for the term
-  
+
   # Returns nothing.
   get_ids: (type, term, callback) ->
     @redis.get @key(type, @helper.normalize(term)), (err, result) ->
@@ -226,11 +227,11 @@ class Connection
 
 
   # Public: Returns the data for an ID
-  
+
   # * 'type'    - the type of data for this term
   # * `id`       - unique identifier (within the specific type)
   # * 'callback(err, result)' - result is the data
-  
+
   # Returns nothing.
   get_data: (type, id, callback) ->
     @redis.hget @key(type, "data"), id,

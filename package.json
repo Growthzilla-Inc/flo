@@ -13,8 +13,15 @@
     "should": "0.2.1",
     "express": "2.4.3"
   },
-  "keywords": ["autocompleter", "soulmate", "redis", "flo"],
+  "keywords": [
+    "autocompleter",
+    "soulmate",
+    "redis",
+    "flo"
+  ],
   "repository": "git://github.com/FLOChip/flo",
   "main": "index",
-  "engines": { "node": ">= 0.4.9 < 0.7.0" }
+  "engines": {
+    "node": ">=8.0.0"
+  }
 }

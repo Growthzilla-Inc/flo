@@ -27,7 +27,7 @@ module.exports =
     result = helper.gsub("-abc-abc-")
     assert.equal("-abc-abc-", result)
 
-    result = helper.gsub("-abc-abc-", //)
+    result = helper.gsub("-abc-abc-")
     assert.equal("-abc-abc-", result)
 
   'test normalize': () ->
