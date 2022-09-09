@@ -275,7 +275,7 @@
                   return callb(err);
                 }
                 if (result === null) {
-                  return cb(new Error("Couldn't delete " + id(+". No such entry.")));
+                  return callb(new Error("Couldn't delete (" + id + "). No such entry."));
                 }
                 arr = JSON.parse(result);
                 if (arr.toString() === [id].toString()) {
